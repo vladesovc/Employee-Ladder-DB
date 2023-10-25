@@ -1,9 +1,11 @@
+// Import and require inquirer
 const inquirer = require('inquirer');
 // Import and require mysql2
 const mysql = require('mysql2');
-
+// Running the .env to keep login protected
 require("dotenv").config();
 
+// eliminates the need for a connections file
 const db = mysql.createConnection(
     {
         host: 'localhost',
@@ -14,9 +16,29 @@ const db = mysql.createConnection(
     console.log('Connected to the employees_db database.')
 );
 
+function displayMain() {
+    inquirer
+      .prompt({
+        type: 'list',
+        name: 'action',
+        message: 'Select an option:',
+        choices: [
+          'View All Departments',
+          'View All Roles',
+          'View All Employees',
+          'Add a Department',
+          'Add a Role',
+          'Add an Employee',
+          'Update an Employee Role',
+          'Exit',
+        ],
+      })
+    }
+
 function ViewDepartments() {
     db.query ('SELECT * FROM department', (err, results) => {
         console.table(results);
+        displayMain();
     });
 }
 
