@@ -14,12 +14,12 @@
    
 ## Installation
 <a name="installation"></a>
-  
+  In order to install this application you will have to open your integrated terminal by right clicking on the index.js file and selecting the option. Once that is done, enter npm i and this will install all packages in our package.json. Once completed, input node index.js and follow the prompt provided. 
 
 
 ## Usage
 <a name="usage"></a>
-  
+  This allows a business owner to view the departments, the roles, the employees, and they can also add a department, or a role. They cana lso update a role for an employee as well if they get promoted. It allows them to stay more organized and in tune with their business. 
 
 
 ## Credits
