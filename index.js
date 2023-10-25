@@ -42,16 +42,16 @@ function displayMain() {
     .then((answer) => {
         switch (answer.action) {
           case 'View All Departments':
-            ViewDepartments();
+            viewDepartments();
             break;
           case 'View All Roles':
-            ViewRoles();
+            viewRoles();
             break;
           case 'View All Employees':
-            ViewEmployees();
+            viewEmployees();
             break;
           case 'Add a Department':
-            AddDepartment();
+            addDepartment();
             break;
           case 'Add a Role':
             addRole();
@@ -68,34 +68,34 @@ function displayMain() {
         }
       });
   
-function ViewDepartments() {
+function viewDepartments() {
     db.query ('SELECT * FROM department', (err, results) => {
         console.table(results);
         displayMain();
     });
 }
 
-function ViewRoles() {
+function viewRoles() {
     db.query ('SELECT role.id, role.title, role.salary, department.name FROM role JOIN department ON role.department_id = department.id', (err, results) => {
         console.table(results);
         displayMain();
     });
 }
 
-function ViewEmployees() {
+function viewEmployees() {
     db.query ('SELECT employee.id, employee.first_name, employee.last_name, role.title, manager.first_name AS manager FROM employee JOIN role ON employee.role_id = role.id JOIN employee manager ON employee.manager_id = manager.id', (err, results) => {
         console.table(results);
         displayMain();
     });
 }
 
-function AddDepartment() {
+function addDepartment() {
     inquirer
       .prompt([
         {
           type: 'input',
           name: 'name',
-          message: 'Enter the new Department Name:',
+          message: 'What is the new Department name?',
         },
       ])
       .then((answer) => {
@@ -110,6 +110,76 @@ function AddDepartment() {
         });
       });
   }
-}
 
-// name questions after columns the data goes into
+function addRole() {
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'title',
+          message: 'What is the new Role title?',
+        },
+        {
+          type: 'input',
+          name: 'salary',
+          message: 'What is the annual salary for said role?',
+        },
+        {
+          type: 'input',
+          name: 'department_id',
+          message: 'Please enter the correspoinding Department ID for this Role:',
+        },
+      ])
+      .then((answer) => {
+        const query = 'INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)';
+        db.query(query, [answer.title, answer.salary, answer.department_id], (err, results) => {
+          if (err) {
+            console.error('Fail - Role Not Added.', err);
+          } else {
+            console.log('Success! New Role Added');
+          }
+          displayMain();
+        });
+      });
+    }
+    function addEmployee() {
+        inquirer
+          .prompt([
+            {
+              type: 'input',
+              name: 'first_name',
+              message: "Please input the employee's First Name:",
+            },
+            {
+              type: 'input',
+              name: 'last_name',
+              message: "Please input the employee's Last Name:",
+            },
+            {
+              type: 'input',
+              name: 'role_id',
+              message: "Please input the employee's Role ID:",
+            },
+            {
+              type: 'input',
+              name: 'manager_id',
+              message: "Please input the employee's Manager ID (if none, then leave empty):",
+            },
+          ])
+          .then((answer) => {
+            const query = 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)';
+            db.query(
+              query,
+              [answer.first_name, answer.last_name, answer.role_id, answer.manager_id || null],
+              (err, results) => {
+                if (err) {
+                  console.error('Fail - New Employee Not Added', err);
+                } else {
+                  console.log('Success! New Employee Added');
+                }
+                displayMain();
+              }
+            );
+          });
+      }    
+}
