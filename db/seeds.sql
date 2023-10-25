@@ -1,4 +1,4 @@
-use employees;
+use employees_db;
 
 INSERT INTO department
     (name)
@@ -7,7 +7,6 @@ VALUES
     ('Engineering'),
     ('Finance'),
     ('Logistics');
-
 
 INSERT INTO role
     (title, salary, department_id)
@@ -21,15 +20,14 @@ VALUES
     ('Logistics Coordinator', 65000, 4),
     ('Warehouse Manager', 78000, 4);
 
-
 INSERT INTO employee
     (first_name, last_name, role_id, manager_id)
 VALUES
-    ('Eleanor', 'Roberts', 1, NULL),
+    ('Eleanor', 'Roberts', 1, 1),
     ('Sebastian', 'Harrison', 2, 1),
     ('Aria', 'Chen', 3, 1),
-    ('Liam', 'Jackson', 4, 2),
+    ('Liam', 'Jackson', 4, 3),
     ('Aurora', 'Nguyen', 5, 1),
-    ('Caleb', 'Gomez', 6, 3),
+    ('Caleb', 'Gomez', 6, 5),
     ('Luna', 'Brown', 7, 1),
-    ('Kai', 'Williams', 8, 2);
+    ('Kai', 'Williams', 8, 7);
