@@ -142,6 +142,7 @@ function addRole() {
         });
       });
     }
+    
     function addEmployee() {
         inquirer
           .prompt([
@@ -182,4 +183,45 @@ function addRole() {
             );
           });
       }    
+
+      function updateEmployeeRole() {
+        inquirer
+          .prompt([
+            {
+              type: 'input',
+              name: 'role_id',
+              message: 'Please input the Role ID you want to update:',
+            },
+            {
+              type: 'input',
+              name: 'new_title',
+              message: 'Please input the new Role title:',
+            },
+            {
+              type: 'input',
+              name: 'new_salary',
+              message: 'Please be sure to add in the new annual salary:',
+            },
+            {
+              type: 'input',
+              name: 'new_department_id',
+              message: 'Input the Department ID for which the Role is in:',
+            },
+          ])
+          .then((answer) => {
+            const query = 'UPDATE role SET title = ?, salary = ?, department_id = ? WHERE id = ?';
+            db.query(
+              query,
+              [answer.new_title, answer.new_salary, answer.new_department_id, answer.role_id],
+              (err, results) => {
+                if (err) {
+                  console.error('Fail - Role Not Updated.', err);
+                } else {
+                  console.log('Success! Role Updated');
+                }
+                displayMain();
+              }
+            );
+          });
+      }   
 }
